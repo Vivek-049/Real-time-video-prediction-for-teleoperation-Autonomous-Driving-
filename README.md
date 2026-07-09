@@ -1,4 +1,4 @@
-# IFRVP: Real-Time Video Prediction with Fast Video Interpolation Model
+# Real-Time Video Prediction for Teleoperation and Autonomous Driving
 [![arXiv](https://img.shields.io/badge/arXiv-2503.23185-b31b1b.svg)](https://arxiv.org/abs/2503.23185)
 
 ## Project Note
@@ -9,7 +9,7 @@ This fork adapts that work for **real-time video prediction for teleoperation an
 
 ## Overview
 
-This repository contains the implementation of "REAL-TIME VIDEO PREDICTION WITH FAST VIDEO INTERPOLATION MODEL AND PREDICTION TRAINING," a novel approach to enable zero-latency interaction in networked video applications.
+This project uses IFRVP-style future-frame prediction to reduce the visual effect of communication latency in remote driving, robot teleoperation, and autonomous-driving monitoring. Instead of showing only delayed receiver frames, the system predicts the current scene from past frames and displays a compensated view.
 
 ## Teleoperation / Autonomous Driving Adaptation
 
@@ -19,6 +19,71 @@ This adaptation focuses on predicting near-future driving-scene frames for laten
 2. Training and fine-tuning scripts for future-frame prediction
 3. Evaluation utilities for comparing pretrained and fine-tuned IFRVP outputs
 4. Verification scripts and demo metrics for presentation/reporting
+
+## Our Additions
+
+This repository extends the original IFRVP codebase with a driving-video workflow:
+
+- **BDD100K-oriented preprocessing:** `preprocess_bdd100k_t3.py`
+- **Demo-video preprocessing:** `preprocess_demo_videos.py`
+- **BDD100K future-frame training:** `IFRVP/train_bdd100k_t3.py`
+- **Demo fine-tuning:** `IFRVP/train_demo_finetune.py`
+- **Training helpers:** `run_training.sh` and `check_training.sh`
+- **Model comparison tools:** `compare_models.py` and `create_comparison_video.py`
+- **Prediction validation:** `verify_prediction.py`, `debug_verification.py`, and `analyze_comparison_video.py`
+- **Presentation metrics:** `DEMO_METRICS.md` and `generate_slide_metrics.py`
+- **PyTorch in-place operation fix:** `IFRVP/models/IFRNet.py` was updated to avoid slice assignment inside the residual block forward pass.
+
+## Demo Result
+
+The teleoperation demo simulates a 200 ms network delay, equal to 3 frames at 15 FPS. IFRVP predicts the current sender frame from delayed receiver frames.
+
+| Comparison | MSE | PSNR |
+|------------|-----|------|
+| Predicted vs sender | 22.80 | 34.55 dB |
+| Delayed receiver vs sender | 42.80 | 31.82 dB |
+| Improvement | 46.7% lower error | +2.73 dB |
+
+The predicted frame is substantially closer to the current sender frame than the delayed receiver frame, showing the value of future-frame prediction for latency compensation.
+
+## Repository Workflow
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Preprocess driving videos:
+
+```bash
+python preprocess_bdd100k_t3.py
+python preprocess_demo_videos.py
+```
+
+Train or fine-tune the prediction model:
+
+```bash
+bash run_training.sh
+python IFRVP/train_bdd100k_t3.py
+python IFRVP/train_demo_finetune.py
+```
+
+Evaluate and generate comparison material:
+
+```bash
+python test_video_prediction.py
+python test_finetuned.py
+python compare_models.py
+python create_comparison_video.py
+python verify_prediction.py
+```
+
+Generated logs, checkpoints, caches, and output videos are ignored by Git so the repository stays focused on source code and reproducible scripts.
+
+## Original IFRVP Background
+
+The original IFRVP repository contains the implementation of "REAL-TIME VIDEO PREDICTION WITH FAST VIDEO INTERPOLATION MODEL AND PREDICTION TRAINING," a novel approach to enable zero-latency interaction in networked video applications.
 
 ## Paper Link
 
