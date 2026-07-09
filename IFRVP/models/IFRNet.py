@@ -41,9 +41,17 @@ class ResBlock(nn.Module):
 
     def forward(self, x):
         out = self.conv1(x)
-        out[:, -self.side_channels:, :, :] = self.conv2(out[:, -self.side_channels:, :, :])
+        # Avoid in-place operation by using cat instead of slice assignment
+        out_main = out[:, :-self.side_channels, :, :]
+        out_side = self.conv2(out[:, -self.side_channels:, :, :])
+        out = torch.cat([out_main, out_side], dim=1)
+        
         out = self.conv3(out)
-        out[:, -self.side_channels:, :, :] = self.conv4(out[:, -self.side_channels:, :, :])
+        # Avoid in-place operation by using cat instead of slice assignment
+        out_main = out[:, :-self.side_channels, :, :]
+        out_side = self.conv4(out[:, -self.side_channels:, :, :])
+        out = torch.cat([out_main, out_side], dim=1)
+        
         out = self.prelu(x + self.conv5(out))
         return out
 

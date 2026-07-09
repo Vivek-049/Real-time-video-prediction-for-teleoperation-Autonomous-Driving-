@@ -1,8 +1,24 @@
 # IFRVP: Real-Time Video Prediction with Fast Video Interpolation Model
 [![arXiv](https://img.shields.io/badge/arXiv-2503.23185-b31b1b.svg)](https://arxiv.org/abs/2503.23185)
+
+## Project Note
+
+This repository is based on the original IFRVP implementation by Hirose et al. The original project and paper introduced the IFRVP model for real-time video prediction.
+
+This fork adapts that work for **real-time video prediction for teleoperation and autonomous driving**, with additional training and evaluation scripts for BDD100K-style driving videos, demo fine-tuning workflows, and comparison/verification utilities.
+
 ## Overview
 
 This repository contains the implementation of "REAL-TIME VIDEO PREDICTION WITH FAST VIDEO INTERPOLATION MODEL AND PREDICTION TRAINING," a novel approach to enable zero-latency interaction in networked video applications.
+
+## Teleoperation / Autonomous Driving Adaptation
+
+This adaptation focuses on predicting near-future driving-scene frames for latency compensation in remote operation and autonomous-driving video pipelines. The added workflow includes:
+
+1. Preprocessing scripts for BDD100K/demo driving videos
+2. Training and fine-tuning scripts for future-frame prediction
+3. Evaluation utilities for comparing pretrained and fine-tuned IFRVP outputs
+4. Verification scripts and demo metrics for presentation/reporting
 
 ## Paper Link
 

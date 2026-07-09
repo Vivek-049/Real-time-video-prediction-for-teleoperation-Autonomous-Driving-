@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+
+# Training/runtime artifacts
+*.log
+checkpoint*/
+*/checkpoint*/
+*.pth
+*.pt
+*.ckpt
+
+# Generated demos and diagnostics
+output/
