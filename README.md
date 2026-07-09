@@ -36,6 +36,10 @@ This repository extends the original IFRVP codebase with a driving-video workflo
 
 ## Demo Result
 
+Watch the full demo on YouTube: [Real-time video prediction for teleoperation/autonomous driving](https://www.youtube.com/watch?v=I4BESdr4LIU)
+
+![Teleoperation demo preview](docs/assets/teleop_demo.gif)
+
 The teleoperation demo simulates a 200 ms network delay, equal to 3 frames at 15 FPS. IFRVP predicts the current sender frame from delayed receiver frames.
 
 | Comparison | MSE | PSNR |
